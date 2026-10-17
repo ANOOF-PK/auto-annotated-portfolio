@@ -1,53 +1,56 @@
-# Netlify Developer Portfolio Starter (auto-annotated)
+# INSIDE / OUTSIDE — portfolio of Anoof P K
 
-![Developer Portfolio](https://assets.stackbit.com/docs/personal-nextjs-starter-thumb.png)
+An experimental portfolio where a sculpted 3D character is the interface: the **head** opens onto
+how I think, the **hands** hold the work, the **eyes** lead to what I notice, and the surrounding
+**studio** holds experiments. Every interaction in the scene has a plain HTML equivalent, so the
+portfolio works by keyboard, with reduced motion, with 3D switched off, and without WebGL.
 
-This is a full-fledged portfolio website built with Next.js, Tailwind CSS, [visual editor](https://docs.netlify.com/visual-editor/overview/) and the [Git Content Source](https://docs.netlify.com/create/content-sources/git/).
+- Experience specification (scene map, camera plan, state model): [`docs/inside-outside.md`](docs/inside-outside.md)
+- Art-direction rules for future work: [`.claude/skills/portfolio-art-direction/SKILL.md`](.claude/skills/portfolio-art-direction/SKILL.md)
 
-The codebase showcases **how to apply annotations at scale**, meaning: how to make much of your components [highlightable in the visual editor](https://docs.netlify.com/visual-editor/visual-editing/inline-editor/) through data attributes without manually adding code throughout the codebase.
+## Run it
 
-**This is achieved by:**
-
-1. Adding an annotation property to the content objects at they're loaded (see `src/utils/content.ts`)
-1. When rendering the page, each content sub-object is dynamically matched to the appropriate component. At this point, wrap each component with an annotation, based on the abovementioned content property. See `src/components/components-registry.tsx`.
-
-**⚡ Demo:** [auto-annotated-portfolio.netlify.app](https://auto-annotated-portfolio.netlify.app)
-
-## Deploying to Netlify
-
-If you click "Deploy to Netlify" button, it will create a new repo for you that looks exactly like this one, and sets that repo up immediately for deployment on Netlify.
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/netlify-templates/auto-annotated-portfolio)
-
-## Getting Started
-
-The typical development process is to begin by working locally. Clone this repository, then run `npm install` in its root directory.
-
-Run the Next.js development server:
-
-```txt
-cd auto-annotated-portfolio
-npm run dev
+```bash
+npm install
+npm run dev          # http://localhost:3000
+npm run build && npm start
 ```
 
-Install the [Netlify visual editor CLI](https://www.npmjs.com/package/@stackbit/cli). Then open a new terminal window in the same project directory and run the Netlify visual editor dev server:
+## Checks
 
-```txt
-npm install -g @stackbit/cli
-stackbit dev
+```bash
+npm run typecheck
+npm run lint
+npm run build
+npm start &                       # the tests run against a live server
+npm run test:e2e                  # keyboard, focus, Escape, mobile index, 3D off, no-WebGL, routes
+npm run inspect -- http://localhost:3000 shots desktop   # screenshots of every section
 ```
 
-This outputs your own Netlify visual editor URL. Open this, register or sign in, and you will be directed to Netlify's visual editor for your new project.
+The browser scripts use `playwright-core` with an existing Chromium. Set `CHROME_PATH` to your
+Chrome/Chromium binary if it is not at the default Playwright cache path in the scripts.
 
-![Next.js Dev + Netlify visual editor dev](https://assets.stackbit.com/docs/next-dev-stackbit-dev.png)
+## Where things live
 
-## Next Steps
+| Path | What |
+| --- | --- |
+| `src/content/` | All portfolio content as typed data: projects, concepts, observations, experiments, journey. Gaps are explicit `to-supply` entries. |
+| `src/components/` | Semantic HTML: header/index, the seven sections, case-study page styles, static fallback drawings. |
+| `src/experience/store.ts` | Shared state between HTML and 3D (section, hover, selections, scene status, reduced motion). |
+| `src/scene/` | The WebGL layer: `choreography.ts` (camera plan), `Director` (scroll → camera), `Figure`, `Hands`, `Artefacts`, `MindObjects`, `Studio`. |
+| `src/css/main.css` | Design tokens and base styles. |
 
-Here are a few suggestions on what to do next if you're new to Netlify Visual Editor:
+## Adding a project
 
-- Learn [how Netlify Visual Editor works](https://docs.netlify.com/visual-editor/overview/)
-- Check [Netlify visual editor reference documentation](https://visual-editor-reference.netlify.com/)
+Add an entry to `src/content/projects.ts`. Give it a `tier` (`selected` sits on the palm,
+`supporting` on a fingertip), an `artefact` shape, a truthful `status`, and fill case-study parts
+only with documented material and a `source`. Put images in `public/work/<slug>/` and list them in
+`assets`. Leave anything unconfirmed as `to-supply` — the case-study page lists it as a gap rather
+than inventing it.
 
-## Support
+## Replacing the character
 
-If you get stuck along the way, get help in our [support forums](https://answers.netlify.com/).
+The bust is procedural (primitives in `src/scene/Figure.tsx` and `Hands.tsx`) and is not a likeness.
+A modelled character can replace it by keeping the same node roles — `head`, `cranium` (the lid that
+opens), `eyes`, `hand-r` (carries artefacts) and `hand-l` — so the choreography and interactions
+continue to work.

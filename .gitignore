@@ -3,9 +3,9 @@
 # dependencies
 /node_modules
 
-# stackbit
-.stackbit/cache
-.cache
+# local inspection output
+scripts/.tmp
+shots
 
 # testing
 /coverage
@@ -39,3 +39,6 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# typescript
+*.tsbuildinfo

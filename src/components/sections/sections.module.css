@@ -1,0 +1,769 @@
+/*
+ * Sections never create stacking contexts themselves, so their children can sit
+ * either under the fixed canvas (the masthead) or over it (reading panels).
+ */
+.section {
+    position: relative;
+    min-height: 100svh;
+    padding: calc(var(--header-h) + 2.5rem) var(--gutter) 4rem;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    align-items: center;
+}
+
+.art {
+    position: relative;
+    z-index: var(--z-canvas);
+    grid-row: 1;
+    align-self: stretch;
+    max-height: 80vh;
+    pointer-events: none;
+}
+.copy {
+    position: relative;
+    z-index: var(--z-content);
+    grid-row: 1;
+}
+.section[data-side='left'] .copy {
+    grid-column: 1 / span 5;
+}
+.section[data-side='left'] .art {
+    grid-column: 6 / -1;
+}
+.section[data-side='right'] .copy {
+    grid-column: 8 / -1;
+}
+.section[data-side='right'] .art {
+    grid-column: 1 / 8;
+}
+
+/* ---------- Shared text voice ---------- */
+
+.kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+}
+.kicker > span {
+    padding: 0.15rem 0.4rem;
+    background: var(--color-ink);
+    color: var(--color-bone);
+}
+.section[data-tone='coral'] .kicker > span {
+    background: var(--color-coral);
+    color: var(--color-ink);
+}
+.section[data-tone='lime'] .kicker > span {
+    background: var(--color-lime);
+    color: var(--color-ink);
+}
+
+.title {
+    font-size: var(--step-3);
+    font-weight: 750;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    margin-bottom: 1.25rem;
+    text-wrap: balance;
+}
+.intro {
+    max-width: 38ch;
+    color: var(--color-ink-soft);
+    margin-bottom: 1.75rem;
+    text-wrap: pretty;
+}
+.notice {
+    margin-bottom: 1.25rem;
+}
+
+.primary,
+.secondary,
+.close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0 1.25rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background var(--dur-quick) var(--ease-out),
+        color var(--dur-quick) var(--ease-out),
+        border-color var(--dur-quick) var(--ease-out);
+}
+.primary {
+    background: var(--color-ink);
+    color: var(--color-bone);
+}
+.primary::after {
+    content: '→';
+}
+.primary:hover {
+    background: var(--color-blue);
+}
+.secondary {
+    border: 1.5px solid var(--color-ink);
+}
+.secondary:hover {
+    border-color: var(--color-blue);
+    color: var(--color-blue);
+}
+.close {
+    min-height: 2.25rem;
+    padding: 0 0.8rem;
+    border: 1px solid var(--color-ink);
+    background: var(--color-bone);
+    font-weight: 400;
+}
+.close:hover {
+    border-color: var(--color-blue);
+    color: var(--color-blue);
+}
+
+.facts {
+    display: grid;
+    gap: 0.9rem;
+}
+.facts dt {
+    color: var(--color-ink-soft);
+    margin-bottom: 0.15rem;
+}
+
+.inlineLinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.inlineLinks a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+}
+.inlineLinks a:hover {
+    color: var(--color-blue);
+}
+
+.letter {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+}
+
+/* ---------- 01 Arrival ---------- */
+
+.arrival {
+    grid-template-rows: auto 1fr auto;
+    padding-top: calc(var(--header-h) + 1rem);
+    padding-bottom: 2.5rem;
+    align-items: end;
+}
+.arrivalKicker {
+    position: relative;
+    z-index: var(--z-content);
+    grid-column: 1 / -1;
+    grid-row: 1;
+    align-self: start;
+    color: var(--color-ink-soft);
+}
+.mast {
+    position: relative;
+    z-index: var(--z-masthead);
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-self: center;
+    /* The name splits around the bust: first name left, initials right. */
+    display: flex;
+    justify-content: space-between;
+    margin: -6vh -0.04em 0;
+    font-size: var(--step-mast);
+    font-weight: 800;
+    line-height: 0.78;
+    letter-spacing: -0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    font-variation-settings: 'opsz' 96;
+}
+.arrivalArt {
+    position: relative;
+    z-index: var(--z-canvas);
+    grid-column: 6 / span 5;
+    grid-row: 1 / 4;
+    align-self: stretch;
+    pointer-events: none;
+}
+.lead {
+    position: relative;
+    z-index: var(--z-content);
+    grid-column: 1 / span 5;
+    grid-row: 3;
+}
+.role {
+    color: var(--color-ink-soft);
+    margin-bottom: 0.6rem;
+}
+.statement {
+    font-size: var(--step-2);
+    font-weight: 650;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    max-width: 18ch;
+    margin-bottom: 0.75rem;
+}
+.focus {
+    color: var(--color-ink-soft);
+    max-width: 36ch;
+    margin-bottom: 1.25rem;
+}
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+.bodyIndex {
+    position: relative;
+    z-index: var(--z-content);
+    grid-column: 10 / -1;
+    grid-row: 3;
+    align-self: end;
+}
+.bodyIndex > .mono {
+    color: var(--color-ink-soft);
+    margin-bottom: 0.4rem;
+}
+.bodyIndex ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.bodyIndex a {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--color-rule);
+    text-decoration: none;
+    font-weight: 560;
+}
+.bodyIndex a .mono {
+    min-width: 3.5rem;
+    color: var(--color-ink-soft);
+}
+.bodyIndex a:hover,
+.bodyIndex a:focus-visible {
+    color: var(--color-blue);
+}
+.hint {
+    margin-top: 0.5rem;
+    font-size: var(--step--1);
+    color: var(--color-ink-soft);
+}
+:global(html:not([data-scene='ready'])) .hint {
+    display: none;
+}
+
+/* ---------- 02 Mind ---------- */
+
+.conceptList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.conceptButton {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.9rem;
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.6rem 0;
+    border-top: 1px solid var(--color-rule);
+    text-align: left;
+    cursor: pointer;
+}
+.conceptTitle {
+    font-size: var(--step-1);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+.depth {
+    font-size: 0.6875rem;
+    color: var(--color-ink-soft);
+}
+.depth[data-depth='to-confirm'] {
+    border-bottom: 1px dashed currentColor;
+}
+.conceptButton:hover .conceptTitle,
+.conceptButton[aria-expanded='true'] .conceptTitle {
+    color: var(--color-blue);
+}
+.conceptButton[aria-expanded='true'] .letter {
+    background: var(--color-blue);
+    border-color: var(--color-blue);
+    color: var(--color-bone);
+}
+
+.conceptDetail,
+.preview {
+    margin-top: 1.25rem;
+    padding: 1.25rem;
+    border: 2px solid var(--color-ink);
+    background: var(--color-bone);
+}
+.detailHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+}
+.motif {
+    width: 10rem;
+    height: 4rem;
+    color: var(--color-blue);
+}
+.detailTitle {
+    font-size: var(--step-2);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+}
+.detailStatement {
+    font-size: var(--step-1);
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    text-wrap: pretty;
+}
+
+/* ---------- 03 Work ---------- */
+
+.projectGroup + .projectGroup {
+    margin-top: 1.5rem;
+}
+.groupTitle {
+    color: var(--color-ink-soft);
+    margin-bottom: 0.4rem;
+}
+.projectList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.projectRow {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    border-top: 1px solid var(--color-rule);
+}
+.projectButton {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.75rem 0.5rem 0.75rem 0;
+    text-align: left;
+    cursor: pointer;
+}
+.projectText {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.projectTitle {
+    font-size: var(--step-1);
+    font-weight: 650;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+.projectList[data-compact='true'] .projectTitle {
+    font-size: var(--step-0);
+}
+.projectMeta {
+    font-size: var(--step--1);
+    color: var(--color-ink-soft);
+}
+.projectButton:hover .projectTitle,
+.projectButton:hover :global(svg) {
+    color: var(--color-blue);
+}
+.direct {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    text-decoration: none;
+    font-size: 1.125rem;
+    border-left: 1px solid var(--color-rule);
+}
+.direct:hover {
+    color: var(--color-blue);
+}
+
+.previewBar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+.previewOrg {
+    color: var(--color-ink-soft);
+}
+.previewTitle {
+    font-size: var(--step-3);
+    font-weight: 750;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    margin: 0.3rem 0 1rem;
+}
+.metaGrid {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    gap: 0.5rem 1.75rem;
+    margin-bottom: 1rem;
+}
+.metaGrid dt {
+    color: var(--color-ink-soft);
+}
+.previewSummary {
+    font-size: var(--step-1);
+    line-height: 1.35;
+    margin-bottom: 0.75rem;
+}
+.previewContribution {
+    margin-bottom: 1.25rem;
+    color: var(--color-ink-soft);
+}
+.previewContribution > .mono {
+    margin-right: 0.4rem;
+    color: var(--color-ink);
+}
+
+/* ---------- 04 Observations ---------- */
+
+.observationList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.observation {
+    border-left: 3px solid var(--color-coral);
+    margin-bottom: 0.6rem;
+    background: var(--color-bone);
+}
+.observationButton {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 0.25rem 0.9rem;
+    width: 100%;
+    padding: 0.75rem 0.9rem;
+    text-align: left;
+    cursor: pointer;
+}
+.observationButton .letter {
+    grid-row: span 2;
+    border-radius: 0;
+    padding: 0 0.4rem;
+    font-size: 0.625rem;
+}
+.observationTitle {
+    font-weight: 600;
+}
+.evidence {
+    font-size: 0.6875rem;
+    color: var(--color-ink-soft);
+}
+.observation[data-open='true'] .letter,
+.observationButton:hover .letter {
+    background: var(--color-coral);
+    border-color: var(--color-coral);
+}
+.observationBody {
+    display: grid;
+    gap: 0.75rem;
+    padding: 0 0.9rem 1rem;
+}
+.observationBody[hidden] {
+    display: none;
+}
+.observationBody dt {
+    color: var(--color-ink-soft);
+}
+
+/* ---------- 05 Playground: the visual language of unfinished work ---------- */
+
+.experiments {
+    display: grid;
+    gap: 1rem;
+}
+.experiment {
+    padding: 1.25rem;
+    border: 1.5px dashed var(--color-ink);
+    background-color: var(--color-bone);
+    background-image:
+        linear-gradient(color-mix(in srgb, var(--color-ink) 6%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in srgb, var(--color-ink) 6%, transparent) 1px, transparent 1px);
+    background-size: 16px 16px;
+}
+.experiment:focus-visible,
+.experiment:hover {
+    border-style: solid;
+    box-shadow: 6px 6px 0 var(--color-lime);
+}
+.experimentHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+.experimentHead h3 {
+    font-size: var(--step-2);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+.question {
+    font-size: var(--step-1);
+    line-height: 1.3;
+    margin-bottom: 1rem;
+}
+
+/* ---------- 06 Journey ---------- */
+
+.timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.stop {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--color-rule);
+}
+.when {
+    color: var(--color-ink-soft);
+    padding-top: 0.3rem;
+}
+.place {
+    font-size: var(--step-1);
+    font-weight: 650;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+.stopRole {
+    color: var(--color-ink-soft);
+    margin-bottom: 0.35rem;
+}
+.shaped {
+    margin-bottom: 0.35rem;
+}
+
+/* ---------- 07 Contact ---------- */
+
+.contact {
+    grid-template-rows: minmax(40vh, 1fr) auto auto;
+    align-items: start;
+    padding-top: var(--header-h);
+    padding-bottom: 1.5rem;
+}
+.contactArt {
+    position: relative;
+    z-index: var(--z-canvas);
+    grid-column: 4 / span 6;
+    grid-row: 1;
+    align-self: stretch;
+    pointer-events: none;
+}
+.contactCopy {
+    position: relative;
+    z-index: var(--z-content);
+    grid-column: 3 / span 8;
+    grid-row: 2;
+    text-align: center;
+    padding-bottom: 3rem;
+}
+.contactCopy .kicker {
+    justify-content: center;
+}
+.contactTitle {
+    font-size: var(--step-3);
+    font-weight: 750;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    margin: 0 auto 2rem;
+    max-width: 16ch;
+    text-wrap: balance;
+}
+.contactLinks {
+    display: grid;
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+}
+.contactLinks li {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--color-rule);
+}
+.contactLinks a {
+    font-weight: 600;
+    text-underline-offset: 0.2em;
+    overflow-wrap: anywhere;
+}
+.contactLinks a:hover {
+    color: var(--color-blue);
+}
+.footer {
+    position: relative;
+    z-index: var(--z-content);
+    grid-column: 1 / -1;
+    grid-row: 3;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-ink);
+    font-size: var(--step--1);
+    color: var(--color-ink-soft);
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 1100px) {
+    .section[data-side='left'] .copy {
+        grid-column: 1 / span 6;
+    }
+    .section[data-side='left'] .art {
+        grid-column: 7 / -1;
+    }
+    .section[data-side='right'] .copy {
+        grid-column: 7 / -1;
+    }
+    .section[data-side='right'] .art {
+        grid-column: 1 / 7;
+    }
+    .lead {
+        grid-column: 1 / span 7;
+    }
+    .bodyIndex {
+        grid-column: 9 / -1;
+    }
+}
+
+/*
+ * Narrow or portrait screens: recompose rather than shrink. The scene owns the top
+ * of each section (camera frames its focal point at ~25% height), and reading panels
+ * slide up over it on an opaque ground. The aspect-ratio condition must match
+ * `live.narrow` in src/scene/Director.tsx so camera framing and layout switch together.
+ */
+@media (max-width: 760px), (max-aspect-ratio: 9/10) {
+    .section {
+        display: block;
+        padding: 0 0 2.5rem;
+    }
+    .art {
+        height: 52svh;
+        max-height: none;
+    }
+    .copy,
+    .contactCopy {
+        padding: 1.5rem var(--gutter) 0;
+        background: var(--color-bone);
+        border-top: 1px solid var(--color-ink);
+    }
+    .title {
+        margin-bottom: 1rem;
+    }
+
+    .arrival {
+        display: flex;
+        flex-direction: column;
+        padding: calc(var(--header-h) + 0.5rem) 0 2rem;
+    }
+    .arrivalKicker,
+    .mast {
+        padding: 0 var(--gutter);
+    }
+    /* Stacked masthead; the bust rises into the initials. */
+    .mast {
+        flex-direction: column;
+        margin: 0.75rem 0 0;
+        font-size: clamp(3.5rem, 25vw, 9rem);
+        line-height: 0.8;
+    }
+    .mast > span:nth-child(2) {
+        align-self: flex-end;
+    }
+    .arrivalArt {
+        height: 46svh;
+        margin-top: -8svh;
+    }
+    .lead,
+    .bodyIndex {
+        padding: 1.25rem var(--gutter) 0;
+        background: var(--color-bone);
+    }
+    .lead {
+        border-top: 1px solid var(--color-ink);
+    }
+
+    .projectButton {
+        grid-template-columns: auto 1fr;
+        align-items: start;
+    }
+    .projectButton > :global(.mono) {
+        grid-column: 2;
+        justify-self: start;
+    }
+
+    .stop {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+    }
+    .metaGrid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .contact {
+        display: flex;
+        flex-direction: column;
+        padding: 0 0 1.5rem;
+    }
+    .contactArt {
+        height: 52svh;
+    }
+    .contactCopy {
+        text-align: left;
+    }
+    .contactCopy .kicker {
+        justify-content: flex-start;
+    }
+    .contactTitle {
+        margin-left: 0;
+    }
+    .contactLinks li {
+        grid-template-columns: 6.5rem 1fr;
+    }
+    .footer {
+        margin: 0 var(--gutter);
+    }
+}

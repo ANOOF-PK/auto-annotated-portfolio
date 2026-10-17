@@ -1,0 +1,54 @@
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.2em 0.55em 0.15em;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-size: 0.6875rem;
+}
+.tag::before {
+    content: '';
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background: currentColor;
+}
+/* Shape, not only colour, separates states: filled = confirmed, ring = open question. */
+.tag[data-status='unconfirmed']::before,
+.tag[data-status='concept']::before {
+    background: transparent;
+    border: 1px solid currentColor;
+}
+.tag[data-status='shipped'] {
+    background: var(--color-ink);
+    color: var(--color-bone);
+}
+.tag[data-status='prototype'],
+.tag[data-status='concept'],
+.tag[data-status='in-progress'] {
+    background: var(--color-lime);
+    border-color: var(--color-ink);
+    color: var(--color-ink);
+}
+
+.pending {
+    display: inline;
+    padding: 0.1em 0.35em;
+    border: 1px dashed color-mix(in srgb, var(--color-ink) 45%, transparent);
+    color: var(--color-ink-soft);
+    background: color-mix(in srgb, var(--color-bone-deep) 60%, transparent);
+    font-size: 0.95em;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+}
+.pending > :global(.mono) {
+    font-size: 0.6875rem;
+    color: var(--color-ink);
+    margin-right: 0.25em;
+}
+
+.icon {
+    flex: none;
+}

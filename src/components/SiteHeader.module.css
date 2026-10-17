@@ -1,0 +1,148 @@
+.header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: var(--z-chrome);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem var(--gutter) 1.5rem;
+    background: linear-gradient(var(--color-bone) 55%, color-mix(in srgb, var(--color-bone) 0%, transparent));
+    pointer-events: none;
+}
+.header > * {
+    pointer-events: auto;
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    line-height: 1.1;
+}
+.brandName {
+    font-weight: 700;
+    font-size: 1.0625rem;
+    letter-spacing: -0.01em;
+}
+.brand :global(.mono) {
+    font-size: 0.6875rem;
+    color: var(--color-ink-soft);
+}
+
+.desktop {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+}
+
+.list {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.list a {
+    display: flex;
+    flex-direction: column;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    padding: 0.2rem 0.6rem 0.35rem;
+    border-top: 2px solid transparent;
+    text-decoration: none;
+    line-height: 1.15;
+}
+.label {
+    font-size: 0.9375rem;
+    font-weight: 560;
+}
+.part {
+    font-size: 0.625rem;
+    color: var(--color-ink-soft);
+}
+.list a:hover .label {
+    color: var(--color-blue);
+}
+.list a[aria-current] {
+    border-top-color: var(--color-blue);
+}
+.list a[aria-current] .label {
+    color: var(--color-blue);
+}
+
+.toggle,
+.indexButton,
+.close {
+    min-height: 2.75rem;
+    padding: 0 0.9rem;
+    border: 1px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-bone);
+    cursor: pointer;
+}
+.toggle[aria-pressed='true'] {
+    background: var(--color-ink);
+    color: var(--color-bone);
+}
+.toggle:hover,
+.indexButton:hover {
+    border-color: var(--color-blue);
+}
+.toggleNote {
+    font-size: 0.6875rem;
+    color: var(--color-ink-soft);
+    max-width: 10rem;
+    padding-top: 0.4rem;
+}
+
+.indexButton {
+    display: none;
+}
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-sheet);
+    background: color-mix(in srgb, var(--color-ink) 35%, transparent);
+}
+.sheet {
+    position: absolute;
+    inset: auto 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: 1.25rem var(--gutter) calc(1.5rem + env(safe-area-inset-bottom));
+    background: var(--color-bone);
+    border-top: 2px solid var(--color-ink);
+}
+.sheetHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sheet .list {
+    flex-direction: column;
+}
+.sheet .list a {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--color-rule);
+}
+.sheet .label {
+    font-size: 1.5rem;
+}
+.sheet .toggle {
+    align-self: flex-start;
+}
+
+@media (max-width: 880px) {
+    .desktop {
+        display: none;
+    }
+    .indexButton {
+        display: block;
+    }
+}

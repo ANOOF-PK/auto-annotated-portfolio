@@ -1,0 +1,49 @@
+.layer {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-canvas);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 600ms var(--ease-out);
+}
+.layer[data-ready='true'] {
+    opacity: 1;
+}
+.layer canvas {
+    pointer-events: none;
+}
+
+.cursorLabel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-chrome);
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    max-width: 18rem;
+    padding: 0.5rem 0.7rem 0.45rem;
+    background: var(--color-ink);
+    color: var(--color-bone);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity var(--dur-quick) var(--ease-out);
+}
+.cursorLabel[data-visible='true'] {
+    opacity: 1;
+}
+.cursorLabel :global(.mono) {
+    font-size: 0.6875rem;
+    color: var(--color-lime);
+}
+.cursorTitle {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+@media (pointer: coarse) {
+    .cursorLabel {
+        display: none;
+    }
+}
