@@ -60,6 +60,13 @@ export const ProjectLayoutModel: Model = {
             }
         },
         {
+            type: 'enum',
+            name: 'caseStudy',
+            label: 'Bespoke case study',
+            description: 'Render a custom-designed case study instead of the default project article',
+            options: [{ label: 'NooFi Speaks', value: 'noofi-speaks' }]
+        },
+        {
             type: 'list',
             name: 'bottomSections',
             label: 'Sections',
